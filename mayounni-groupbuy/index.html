@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+  <title>윤식단 마요언니 공동구매 제안서</title>
+  <style>
+    :root {
+      --ink: #17211b;
+      --muted: #5c655f;
+      --line: #d8ded7;
+      --paper: #ffffff;
+      --wash: #f4f6f2;
+      --green: #23614a;
+      --blue: #244f7a;
+      --gold: #a8671a;
+      --coral: #b5483f;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Noto Sans KR", sans-serif;
+      color: var(--ink);
+      background: var(--wash);
+      line-height: 1.65;
+      letter-spacing: 0;
+    }
+    .topbar {
+      background: var(--paper);
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+    .topbar-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+    .brand {
+      font-weight: 800;
+      color: var(--green);
+    }
+    .date {
+      font-size: 13px;
+      color: var(--muted);
+    }
+    header {
+      background: var(--paper);
+      border-bottom: 1px solid var(--line);
+    }
+    .hero {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 48px 20px 34px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr);
+      gap: 28px;
+      align-items: end;
+    }
+    .eyebrow {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(32px, 5vw, 56px);
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+    .lead {
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 18px;
+      max-width: 720px;
+    }
+    .summary-panel {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+      background: #fbfcfa;
+    }
+    .summary-panel strong {
+      display: block;
+      font-size: 22px;
+      color: var(--green);
+      margin-bottom: 4px;
+    }
+    .summary-panel span {
+      display: block;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    main {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 28px 20px 56px;
+    }
+    section {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 18px;
+    }
+    h2 {
+      margin: 0 0 14px;
+      font-size: 24px;
+      line-height: 1.25;
+    }
+    h3 {
+      margin: 22px 0 10px;
+      font-size: 18px;
+    }
+    .note {
+      margin: 0 0 16px;
+      color: var(--muted);
+    }
+    .option-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+    .option-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      min-height: 154px;
+      background: #fbfcfa;
+    }
+    .code {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 38px;
+      height: 30px;
+      border-radius: 6px;
+      color: #fff;
+      font-weight: 800;
+      background: var(--green);
+      margin-bottom: 12px;
+    }
+    .option-card:nth-child(2) .code { background: var(--blue); }
+    .option-card:nth-child(3) .code { background: var(--gold); }
+    .option-card:nth-child(4) .code { background: var(--coral); }
+    .option-card h3 {
+      margin: 0 0 8px;
+      font-size: 17px;
+    }
+    .price {
+      font-size: 22px;
+      font-weight: 900;
+      margin-top: 8px;
+    }
+    .small {
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 900px;
+      background: var(--paper);
+    }
+    th, td {
+      padding: 13px 12px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      white-space: normal;
+    }
+    th {
+      background: #edf3ef;
+      font-size: 13px;
+      color: #2b3a31;
+    }
+    td.num, th.num {
+      text-align: right;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+    tr:last-child td { border-bottom: 0; }
+    .pill {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 3px 9px;
+      background: #edf3ef;
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    .split {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .plain-box {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      background: #fbfcfa;
+    }
+    ul {
+      margin: 10px 0 0;
+      padding-left: 20px;
+    }
+    li + li { margin-top: 6px; }
+    .footer {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 20px 40px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; }
+      .option-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .split { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px) {
+      .topbar-inner { align-items: flex-start; flex-direction: column; gap: 4px; }
+      section { padding: 18px; }
+      .option-grid { grid-template-columns: 1fr; }
+      table { min-width: 760px; }
+      th, td { padding: 11px 10px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">Yundiet Group-buy Proposal</div>
+      <div class="date">2026.06.23 기준 · 무료배송 공구가 제안</div>
+    </div>
+  </div>
+
+  <header>
+    <div class="hero">
+      <div>
+        <div class="eyebrow">MAYOUNNI GROUP-BUY</div>
+        <h1>마요언니 공동구매 제안서</h1>
+        <p class="lead">단백밥과 순수단백을 함께 제안하는 4개 옵션입니다. 고객에게는 무료배송가로 안내하고, 공구 수수료는 배송비를 제외한 상품가 기준 10%로 계산했습니다.</p>
+      </div>
+      <div class="summary-panel">
+        <strong>4개 옵션 제안</strong>
+        <span>D1 · P1 · M1 · M2</span>
+        <span>배송비 6,200원은 수수료 기준에서 제외</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <h2>제안 옵션 한눈에 보기</h2>
+      <p class="note">혼합 구성은 단백밥과 순수단백을 같이 경험할 수 있어 첫 공구 메인 옵션으로 추천드립니다.</p>
+      <div class="option-grid">
+        <div class="option-card">
+          <span class="code">D1</span>
+          <h3>단백밥 12팩</h3>
+          <div class="small">올인원 10종 + 랜덤 2팩</div>
+          <div class="price">72,900원</div>
+          <div class="small">7,300원 할인</div>
+        </div>
+        <div class="option-card">
+          <span class="code">P1</span>
+          <h3>순수단백 20팩</h3>
+          <div class="small">저당불고기 10팩 + 저당제육 10팩</div>
+          <div class="price">42,900원</div>
+          <div class="small">5,300원 할인</div>
+        </div>
+        <div class="option-card">
+          <span class="code">M1</span>
+          <h3>단백밥 6팩 + 순수단백 20팩</h3>
+          <div class="small">체험형 혼합 구성</div>
+          <div class="price">75,900원</div>
+          <div class="small">9,300원 할인</div>
+        </div>
+        <div class="option-card">
+          <span class="code">M2</span>
+          <h3>단백밥 12팩 + 순수단백 20팩</h3>
+          <div class="small">정착형 혼합 구성</div>
+          <div class="price">109,900원</div>
+          <div class="small">6,100원 할인</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>고객 발송용 가격표 + 공구 수수료</h2>
+      <p class="note">소비자가격은 현재 배송 정책을 반영한 고객 결제 기준입니다. 9만원 미만은 배송비 6,200원을 포함했고, 9만원 이상은 무료배송 기준입니다.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>옵션</th>
+              <th>상품군</th>
+              <th>구성</th>
+              <th class="num">소비자가격<br><span class="small">(배송비 포함)</span></th>
+              <th class="num">공동구매가</th>
+              <th class="num">고객 할인</th>
+              <th>배송비 여부</th>
+              <th class="num">수수료 기준액</th>
+              <th class="num">공구 수수료 10%</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="pill">D1</span></td>
+              <td>단백밥</td>
+              <td>단백밥 올인원 12팩</td>
+              <td class="num">80,200원</td>
+              <td class="num">72,900원</td>
+              <td class="num">7,300원</td>
+              <td>무료배송<br><span class="small">배송비 6,200원 포함</span></td>
+              <td class="num">66,700원</td>
+              <td class="num">6,670원</td>
+            </tr>
+            <tr>
+              <td><span class="pill">P1</span></td>
+              <td>순수단백</td>
+              <td>저당불고기 10팩 + 저당제육 10팩</td>
+              <td class="num">48,200원</td>
+              <td class="num">42,900원</td>
+              <td class="num">5,300원</td>
+              <td>무료배송<br><span class="small">배송비 6,200원 포함</span></td>
+              <td class="num">36,700원</td>
+              <td class="num">3,670원</td>
+            </tr>
+            <tr>
+              <td><span class="pill">M1</span></td>
+              <td>혼합</td>
+              <td>단백밥 6팩 + 순수단백 20팩</td>
+              <td class="num">85,200원</td>
+              <td class="num">75,900원</td>
+              <td class="num">9,300원</td>
+              <td>무료배송<br><span class="small">배송비 6,200원 포함</span></td>
+              <td class="num">69,700원</td>
+              <td class="num">6,970원</td>
+            </tr>
+            <tr>
+              <td><span class="pill">M2</span></td>
+              <td>혼합</td>
+              <td>단백밥 12팩 + 순수단백 20팩</td>
+              <td class="num">116,000원</td>
+              <td class="num">109,900원</td>
+              <td class="num">6,100원</td>
+              <td>무료배송<br><span class="small">배송비 6,200원 포함</span></td>
+              <td class="num">103,700원</td>
+              <td class="num">10,370원</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>배송비와 수수료 계산 기준</h2>
+      <div class="split">
+        <div class="plain-box">
+          <h3>고객 안내 기준</h3>
+          <ul>
+            <li>공동구매가는 모두 무료배송가로 안내합니다.</li>
+            <li>현재가 비교에는 배송비 6,200원을 반영했습니다.</li>
+            <li>90,000원 이상인 M2의 현재 소비자가격은 무료배송 기준입니다.</li>
+          </ul>
+        </div>
+        <div class="plain-box">
+          <h3>공구 수수료 기준</h3>
+          <ul>
+            <li>수수료율은 10%입니다.</li>
+            <li>배송비 6,200원은 수수료 기준에서 제외합니다.</li>
+            <li>수수료 산식은 <strong>(공동구매가 - 6,200원) x 10%</strong>입니다.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>단백밥 포함 구성 상세</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>옵션</th>
+              <th>단백밥 포함 내용</th>
+              <th>순수단백 포함 내용</th>
+              <th>소스/비고</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="pill">D1</span></td>
+              <td>단백밥 12팩: 올인원 10종 1팩씩 + 랜덤 2팩</td>
+              <td>없음</td>
+              <td>소스 5개 포함</td>
+            </tr>
+            <tr>
+              <td><span class="pill">M1</span></td>
+              <td>단백밥 6팩: 공구 전용 체험 구성, 닭가슴살 6종 각 1팩</td>
+              <td>저당불고기 10팩 + 저당제육 10팩</td>
+              <td>6팩 구성은 옵션 생성 전 최종 확정 필요</td>
+            </tr>
+            <tr>
+              <td><span class="pill">M2</span></td>
+              <td>단백밥 12팩: 올인원 10종 1팩씩 + 랜덤 2팩</td>
+              <td>저당불고기 10팩 + 저당제육 10팩</td>
+              <td>소스 5개 포함</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>단백밥 올인원 10종</h3>
+      <div class="split">
+        <div class="plain-box">
+          <h3>닭가슴살 6종</h3>
+          <p class="note">오리지널, 데리야끼, 바베큐, 볼케이노, 블랙알리오, 양념치킨</p>
+        </div>
+        <div class="plain-box">
+          <h3>프리미엄 4종</h3>
+          <p class="note">단짠 불고기, 직화 제육볶음, 그릴드 저당함박, 그릴드 훈제오리</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>추천 운영 순서</h2>
+      <ol>
+        <li><strong>M1</strong>을 메인으로 제안합니다. 할인폭이 가장 커서 첫 공구 반응을 만들기 좋습니다.</li>
+        <li><strong>D1</strong>은 단백밥만 원하는 고객용 입문 옵션으로 둡니다.</li>
+        <li><strong>M2</strong>는 넉넉히 구매하려는 고객용 정착 옵션으로 둡니다.</li>
+        <li><strong>P1</strong>은 가격 진입장벽이 낮은 순수단백 단독 옵션으로 둡니다.</li>
+      </ol>
+    </section>
+  </main>
+
+  <div class="footer">
+    <p>본 제안서는 공동구매 진행 협의용입니다. 실제 주문 옵션 생성 전 M1의 단백밥 6팩 구성은 최종 확정이 필요합니다.</p>
+  </div>
+</body>
+</html>
