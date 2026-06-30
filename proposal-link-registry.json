@@ -1,0 +1,40 @@
+{
+  "base_url": "https://2019yundiet-cloud.github.io/yundiet-influencer-proposal",
+  "routes": [
+    {
+      "id": "sponsorship-root",
+      "path": "/",
+      "local_file": "index.html",
+      "owner": "influencer-dm",
+      "purpose": "Default sponsorship proposal link used in first outreach DMs",
+      "locked": true,
+      "expected_markers": [
+        "윤식단 인플루언서 협찬 제안서",
+        "윤식단 인플루언서 협찬",
+        "협찬 제안 내용"
+      ],
+      "forbidden_markers": [
+        "마요언니",
+        "MAYOUNNI GROUP-BUY",
+        "마요언니 공동구매 제안서"
+      ]
+    },
+    {
+      "id": "mayounni-groupbuy-20260623",
+      "path": "/mayounni-groupbuy/",
+      "local_file": "mayounni-groupbuy/index.html",
+      "owner": "groupbuy-influencer-recruiting",
+      "purpose": "Mayounni routine-room group-buy proposal",
+      "locked": true,
+      "expected_markers": [
+        "윤식단 마요언니 공동구매 제안서",
+        "MAYOUNNI GROUP-BUY",
+        "마요언니 공동구매 제안서"
+      ],
+      "forbidden_markers": [
+        "윤식단 인플루언서 협찬 제안서",
+        "협찬 제안 내용"
+      ]
+    }
+  ]
+}
