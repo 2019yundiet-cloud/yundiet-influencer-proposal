@@ -17,6 +17,7 @@ Static GitHub Pages deployment for Yundiet proposal pages.
 
 ```bash
 python3 scripts/validate_proposal_routes.py --local
+python3 scripts/test_validate_proposal_routes.py
 ```
 
 - After pushing, validate the published GitHub Pages routes. GitHub Pages can
@@ -25,3 +26,8 @@ python3 scripts/validate_proposal_routes.py --local
 ```bash
 python3 scripts/validate_proposal_routes.py --public
 ```
+
+The repository workflow `.github/workflows/validate-proposal-routes.yml` runs the
+same local route check and route-validator tests on direct PRs and pushes so the
+root sponsorship page is not accidentally replaced by a partner or group-buy
+proposal.

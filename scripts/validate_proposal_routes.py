@@ -17,7 +17,10 @@ REGISTRY = ROOT / "proposal-link-registry.json"
 
 
 def load_registry() -> dict:
-    return json.loads(REGISTRY.read_text(encoding="utf-8"))
+    registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
+    if not isinstance(registry, dict):
+        raise ValueError("registry: top-level JSON value must be an object")
+    return registry
 
 
 def route_url(base_url: str, route_path: str) -> str:
@@ -48,40 +51,81 @@ def validate_text(route: dict, text: str, label: str) -> list[str]:
 
 def validate_registry_shape(registry: dict) -> list[str]:
     failures: list[str] = []
+    if not isinstance(registry.get("base_url"), str) or not registry.get("base_url", "").startswith("https://"):
+        failures.append("registry: base_url must be an https URL")
+
+    routes = registry.get("routes")
+    if not isinstance(routes, list) or not routes:
+        failures.append("registry: routes must be a non-empty list")
+        return failures
+
     seen_ids: set[str] = set()
     seen_paths: set[str] = set()
+    seen_local_files: set[str] = set()
     root_routes = 0
-    for route in registry.get("routes", []):
-        route_id = route.get("id", "")
-        route_path = route.get("path", "")
+    for route in routes:
+        if not isinstance(route, dict):
+            failures.append("registry: every route must be an object")
+            continue
+
+        raw_route_id = route.get("id", "")
+        route_id = raw_route_id if isinstance(raw_route_id, str) else ""
+        route_label = route_id or "registry route"
+        raw_route_path = route.get("path", "")
+        route_path = raw_route_path if isinstance(raw_route_path, str) else ""
         local_file = route.get("local_file", "")
-        if not route_id:
-            failures.append("registry: route missing id")
+        if not isinstance(raw_route_id, str) or not route_id:
+            failures.append("registry: route id must be a non-empty string")
         elif route_id in seen_ids:
             failures.append(f"registry: duplicate id {route_id!r}")
-        seen_ids.add(route_id)
+        if route_id:
+            seen_ids.add(route_id)
 
-        if not route_path.startswith("/"):
-            failures.append(f"{route_id}: path must start with /")
-        if route_path != "/" and not route_path.endswith("/"):
-            failures.append(f"{route_id}: path must end with /")
-        if route_path in seen_paths:
-            failures.append(f"registry: duplicate path {route_path!r}")
-        seen_paths.add(route_path)
+        if not isinstance(raw_route_path, str) or not route_path:
+            failures.append(f"{route_label}: path must be a non-empty string")
+        else:
+            if not route_path.startswith("/"):
+                failures.append(f"{route_label}: path must start with /")
+            if route_path != "/" and not route_path.endswith("/"):
+                failures.append(f"{route_label}: path must end with /")
+            if route_path != "/" and route_path != f"/{route_path.strip('/')}/":
+                failures.append(f"{route_label}: path must be normalized with one leading and trailing slash")
+            if route_path in seen_paths:
+                failures.append(f"registry: duplicate path {route_path!r}")
+            seen_paths.add(route_path)
+
+        if route.get("locked") is not True:
+            failures.append(f"{route_label}: route must stay locked once published")
+
+        if not isinstance(local_file, str) or not local_file:
+            failures.append(f"{route_label}: local_file required")
+        else:
+            local_path = Path(local_file)
+            if local_path.is_absolute() or ".." in local_path.parts:
+                failures.append(f"{route_label}: local_file must stay inside the Pages repository")
+            if local_file in seen_local_files:
+                failures.append(f"registry: duplicate local_file {local_file!r}")
+            seen_local_files.add(local_file)
 
         if route_path == "/":
             root_routes += 1
-            if not route.get("locked"):
-                failures.append("sponsorship root route must stay locked")
             if local_file != "index.html":
                 failures.append("sponsorship root route must use index.html")
         elif local_file == "index.html":
-            failures.append(f"{route_id}: non-root routes must not reuse root index.html")
+            failures.append(f"{route_label}: non-root routes must not reuse root index.html")
+        elif route_path:
+            expected_local_file = f"{route_path.strip('/')}/index.html"
+            if local_file != expected_local_file:
+                failures.append(f"{route_label}: local_file must match route path as {expected_local_file!r}")
 
-        if not route.get("expected_markers"):
-            failures.append(f"{route_id}: expected_markers required")
-        if not route.get("forbidden_markers"):
-            failures.append(f"{route_id}: forbidden_markers required")
+        for field in ("expected_markers", "forbidden_markers"):
+            markers = route.get(field)
+            if not isinstance(markers, list) or not markers or not all(isinstance(item, str) and item for item in markers):
+                failures.append(f"{route_label}: {field} must be a non-empty list of strings")
+
+        for field in ("owner", "purpose"):
+            if not isinstance(route.get(field), str) or not route.get(field):
+                failures.append(f"{route_label}: {field} required")
 
     if root_routes != 1:
         failures.append(f"registry: expected exactly one root route, found {root_routes}")
@@ -116,12 +160,23 @@ def validate_public(registry: dict, retries: int, wait_seconds: int, timeout: in
                     last_error = ""
                     break
                 last_error = "; ".join(route_failures)
-            except (HTTPError, URLError, RuntimeError) as error:
+            except (HTTPError, URLError, RuntimeError, OSError) as error:
                 last_error = str(error)
             if attempt < retries:
                 time.sleep(wait_seconds)
         if last_error:
             failures.append(f"{label}: {last_error}")
+    return failures
+
+
+def validate_options(retries: int, wait_seconds: int, timeout: int) -> list[str]:
+    failures: list[str] = []
+    if retries < 0:
+        failures.append("options: retries must be >= 0")
+    if wait_seconds < 0:
+        failures.append("options: wait-seconds must be >= 0")
+    if timeout <= 0:
+        failures.append("options: timeout must be > 0")
     return failures
 
 
@@ -137,12 +192,24 @@ def main() -> int:
     if not args.local and not args.public:
         args.local = True
 
-    registry = load_registry()
+    failures = validate_options(args.retries, args.wait_seconds, args.timeout)
+    if failures:
+        for failure in failures:
+            print(f"FAIL {failure}", file=sys.stderr)
+        return 1
+
+    try:
+        registry = load_registry()
+    except (OSError, ValueError, json.JSONDecodeError) as error:
+        print(f"FAIL registry: {error}", file=sys.stderr)
+        return 1
+
     failures = validate_registry_shape(registry)
-    if args.local:
-        failures.extend(validate_local(registry))
-    if args.public:
-        failures.extend(validate_public(registry, args.retries, args.wait_seconds, args.timeout))
+    if not failures:
+        if args.local:
+            failures.extend(validate_local(registry))
+        if args.public:
+            failures.extend(validate_public(registry, args.retries, args.wait_seconds, args.timeout))
 
     if failures:
         for failure in failures:

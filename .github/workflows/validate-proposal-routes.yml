@@ -1,16 +1,42 @@
-name: Validate proposal routes
+name: validate-proposal-routes
 
 on:
-  push:
   pull_request:
+    paths:
+      - "*.html"
+      - "**/*.html"
+      - "proposal-link-registry.json"
+      - "scripts/validate_proposal_routes.py"
+      - "scripts/test_validate_proposal_routes.py"
+      - ".github/workflows/validate-proposal-routes.yml"
+  push:
+    branches: ["main"]
+    paths:
+      - "*.html"
+      - "**/*.html"
+      - "proposal-link-registry.json"
+      - "scripts/validate_proposal_routes.py"
+      - "scripts/test_validate_proposal_routes.py"
+      - ".github/workflows/validate-proposal-routes.yml"
   workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.x"
-      - run: python3 scripts/validate_proposal_routes.py --local
+
+      - name: Validate local proposal routes
+        run: python3 scripts/validate_proposal_routes.py --local
+
+      - name: Test proposal route validator
+        run: python3 scripts/test_validate_proposal_routes.py
